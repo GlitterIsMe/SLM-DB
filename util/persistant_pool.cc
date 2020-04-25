@@ -14,6 +14,7 @@ static uint64_t allocs = 0;
 static size_t mapped_len = 0;
 static int is_pmem = 0;
 static uint64_t cur = 0;
+static uint64_t used = 0;
 
 
 void create_pool(const std::string& dir, const size_t& s) {
@@ -39,6 +40,7 @@ void create_pool(const std::string& dir, const size_t& s) {
 void close_pool() {
   if (init) {
     fprintf(stdout, "pmem allocs %lu\n", allocs);
+    fprintf(stdout, "pmem used %lu\n", used);
     //pmemcto_close(pm_pool);
     pmem_unmap(pm_pool, mapped_len);
   }
@@ -54,6 +56,7 @@ void pfree(void* ptr) {
 
 void* pmalloc(size_t size) {
   void* ptr;
+  used += size;
   if (!init) {
     ptr = malloc(size);
   } else {
