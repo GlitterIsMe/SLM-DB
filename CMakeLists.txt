@@ -11,7 +11,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 find_library(Pthread_LIBRARY pthread)
 find_library(Realtime_LIBRARY rt)
-find_package(PMDK REQUIRED)
+#find_package(libpmem REQUIRED)
 set(Stdcpp_LIBRARY stdc++)
 
 include_directories(
@@ -190,11 +190,12 @@ set_target_properties(leveldb PROPERTIES PUBLIC_HEADER
 target_link_libraries(leveldb
         PRIVATE
         ${Pthread_LIBRARY}
-        ${PMEM_LIBRARY}
-        ${PMEMCTO_LIBRARY}
-        ${PMEMOBJ_LIBRARY}
-        ${PMEMLOG_LIBRARY}
-        ${VMEM_LIBRARY}
+        pmem
+        #${PMEM_LIBRARY}
+        #${PMEMCTO_LIBRARY}
+        #${PMEMOBJ_LIBRARY}
+        #${PMEMLOG_LIBRARY}
+        #${VMEM_LIBRARY}
         )
 
 INSTALL(TARGETS leveldb ARCHIVE DESTINATION /usr/local/lib PUBLIC_HEADER DESTINATION /usr/local/include/leveldb)
@@ -217,5 +218,5 @@ target_link_libraries(btree_bench PUBLIC leveldb)
 add_executable(file_bench bench/file_bench.cc)
 target_link_libraries(file_bench PUBLIC leveldb)
 
-add_executable(pm_stream util/persist_stream.cc)
-target_link_libraries(pm_stream ${VMEM_LIBRARY})
+#add_executable(pm_stream util/persist_stream.cc)
+#target_link_libraries(pm_stream ${VMEM_LIBRARY})
