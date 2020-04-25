@@ -18,14 +18,17 @@ static uint64_t cur = 0;
 
 void create_pool(const std::string& dir, const size_t& s) {
   //size_t size = (s < PMEMCTO_MIN_POOL) ? PMEMCTO_MIN_POOL : s;
-  size_t mapped_size;
+  //size_t mapped_size;
   printf("Creating NVM pool size of %lu\n", s);
   //pm_pool = pmemcto_create(dir.data(), LAYOUT_NAME, size, 0666);
   bool file_is_exists = access(dir.c_str(), F_OK) ? false : true;
   if (file_is_exists) {
       remove(dir.c_str());
   }
-  pm_pool = pmem_map_file(dir.c_str(), s, PMEM_FILE_CREATE, 0666, &mapped_size, &is_pmem);
+  //pm_pool = pmem_map_file(dir.c_str(), s, PMEM_FILE_CREATE, 0666, &mapped_size, &is_pmem);
+  pm_pool = malloc(s);
+  mapped_len = s;
+  is_pmem = false;
   init = true;
   if (pm_pool == nullptr) {
     fprintf(stderr, "pmem create error\n");
