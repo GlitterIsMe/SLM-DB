@@ -59,7 +59,7 @@ void* pmalloc(size_t size) {
 
 void stats() {
     char *msg;
-    vmem_stats_print(pm_pool);
+    vmem_stats_print(pm_pool, msg);
     printf("%s\n", msg);
 }
 
