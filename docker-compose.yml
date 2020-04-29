@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  env:
+    image: centos7:libpmem-simple
+    container_name: centos-libpmem-simple
+    cap_add:
+      - ALL
+    volumes:
+      - /pmem0:/pmem
