@@ -27,8 +27,6 @@ void create_pool(const std::string& dir, const size_t& s) {
       remove(dir.c_str());
   }
   pm_pool = pmem_map_file(dir.c_str(), s, PMEM_FILE_CREATE, 0666, &mapped_size, &is_pmem);
-  // !!! temporally
-  init = false;
   if (pm_pool == nullptr) {
     fprintf(stderr, "pmem create error\n");
     perror(dir.data());
