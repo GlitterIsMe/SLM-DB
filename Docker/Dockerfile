@@ -26,6 +26,7 @@ RUN yum install -y devtoolset-8-gcc devtoolset-8-gcc-c++ && \
 RUN yum -y install libpmem libpmem-devel && \
     yum -y install gdb git
 
+CMD /bin/bash
 
 #RUN echo 'root:000000' |chpasswd
 
