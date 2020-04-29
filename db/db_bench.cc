@@ -109,7 +109,7 @@ static bool FLAGS_use_existing_db = false;
 static bool FLAGS_reuse_logs = false;
 
 // live/total percentage to add into compaction
-static int FLAGS_merge_threshold = 50;
+static int FLAGS_merge_threshold = 70;
 
 // Range query size
 static int FLAGS_range_size = 1000;

@@ -38,6 +38,8 @@ void create_pool(const std::string& dir, const size_t& s) {
 }
 
 void close_pool() {
+    fprintf(stdout, "pmem allocs %lu\n", allocs);
+    fprintf(stdout, "pmem used %lu\n", used);
   if (init) {
     fprintf(stdout, "pmem allocs %lu\n", allocs);
     fprintf(stdout, "pmem used %lu\n", used);
@@ -47,6 +49,7 @@ void close_pool() {
 }
 
 void pfree(void* ptr) {
+    used -= sizeof(ptr);
   if (!init) {
     free(ptr);
   } else {
