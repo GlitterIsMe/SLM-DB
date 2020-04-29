@@ -8,3 +8,4 @@ services:
       - ALL
     volumes:
       - /pmem0:/pmem
+      - /home/zhangyiwen/SLM-DB:/source
