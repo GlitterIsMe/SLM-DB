@@ -43,12 +43,11 @@ void pfree(void* ptr) {
 
 void* pmalloc(size_t size) {
   void* ptr;
-  used += size;
   if (!init) {
     ptr = malloc(size);
   } else {
     allocs++;
-    ptr = vmem_alloc(pm_pool, size);
+    ptr = vmem_malloc(pm_pool, size);
     if(ptr == nullptr){
         fprintf(stderr, "pmem malloc error 2 \n");
         perror("vmem_malloc");
@@ -59,9 +58,9 @@ void* pmalloc(size_t size) {
 }
 
 void stats() {
-//  char *msg;
+    char *msg;
     vmem_stats_print(pm_pool);
-//  printf("%s\n", msg);
+    printf("%s\n", msg);
 }
 
 }
