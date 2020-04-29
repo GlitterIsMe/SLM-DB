@@ -3,7 +3,8 @@ SHELL ["/bin/bash","-ic"]
 RUN yum install -y centos-release-scl epel-release && \
     yum install -y cmake3 make openssl-devel && \
     ln -s /usr/bin/cmake3 /usr/bin/cmake && \
-    cmake --version
+    yum -y install libpmem libpmem-devel && \
+    yum -y install gdb git
 
 RUN yum install -y devtoolset-8-gcc devtoolset-8-gcc-c++ && \
     echo 'source /opt/rh/devtoolset-8/enable' >> ~/.bashrc && \
@@ -23,10 +24,7 @@ RUN yum install -y devtoolset-8-gcc devtoolset-8-gcc-c++ && \
 #    ldconfig && \
 #    rm -rf /gflags
 
-RUN yum -y install libpmem libpmem-devel && \
-    yum -y install gdb git
-
-CMD /bin/bash
+#CMD /bin/bash
 
 #RUN echo 'root:000000' |chpasswd
 
