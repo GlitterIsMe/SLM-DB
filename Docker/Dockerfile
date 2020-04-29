@@ -4,6 +4,7 @@ RUN yum install -y centos-release-scl epel-release && \
     yum install -y cmake3 make openssl-devel && \
     ln -s /usr/bin/cmake3 /usr/bin/cmake && \
     yum -y install libpmem libpmem-devel && \
+    yum -y install libvmem libvmem-devel && \
     yum -y install gdb git
 
 RUN yum install -y devtoolset-8-gcc devtoolset-8-gcc-c++ && \
