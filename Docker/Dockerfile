@@ -12,15 +12,15 @@ RUN yum install -y devtoolset-8-gcc devtoolset-8-gcc-c++ && \
     source ~/.bashrc && \
     gcc -v
 
-RUN mkdir /gflags && cd /gflags && git clone https://github.com/gflags/gflags.git && \
-    cd /gflags && \
+RUN mkdir /gflags-source && cd /gflags-source && git clone https://github.com/gflags/gflags.git && \
+    cd gflags && \
     mkdir build && \
     cd build && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS=ON -DGFLAGS_NAMESPACE=google -G "Unix Makefiles" ../ && \
     make && \
     make install && \
     ldconfig && \
-    rm -rf /gflags
+    rm -rf /gflags-source
 
 CMD /bin/bash
 
