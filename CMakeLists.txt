@@ -11,6 +11,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 find_library(Pthread_LIBRARY pthread)
 find_library(Realtime_LIBRARY rt)
+find_library(libvmem vmem)
 #find_package(libpmem REQUIRED)
 set(Stdcpp_LIBRARY stdc++)
 
@@ -190,7 +191,7 @@ set_target_properties(leveldb PROPERTIES PUBLIC_HEADER
 target_link_libraries(leveldb
         PRIVATE
         ${Pthread_LIBRARY}
-        pmem
+        vmem
         #${PMEM_LIBRARY}
         #${PMEMCTO_LIBRARY}
         #${PMEMOBJ_LIBRARY}
