@@ -211,6 +211,9 @@ class PosixMmapReadableFile: public RandomAccessFile {
   virtual Status Read(uint64_t offset, size_t n, Slice* result,
                       char* scratch) const {
     Status s;
+#ifdef METRICS
+      motivation::metrics().AddDiskReadBytes(n);
+#endif
     if (offset + n > length_) {
       *result = Slice();
       s = PosixError(filename_, EINVAL);
