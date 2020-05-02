@@ -3,7 +3,9 @@
 
 #include <cstdlib>
 #include <iostream>
-
+#ifdef METRICS
+#include "motivation/slm_metrics.h"
+#endif
 #define CPU_FREQ_MHZ (2400) // cat /proc/cpuinfo
 #define CAS(_p, _u, _v)  (__atomic_compare_exchange_n (_p, _u, _v, false, __ATOMIC_ACQUIRE, __ATOMIC_ACQUIRE))
 
@@ -30,6 +32,7 @@ inline void mfence() {
 
 inline void clflush(const char* data, int len) {
   if (data == nullptr) return;
+  motivation::metrics().AddPMWriteBytes(len);
   volatile char *ptr = (char *)((unsigned long)data &~(CACHE_LINE_SIZE-1));
   mfence();
   for (; ptr< const_cast<volatile char*>(data+len); ptr+=CACHE_LINE_SIZE) {

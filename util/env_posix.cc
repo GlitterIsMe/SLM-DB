@@ -26,7 +26,9 @@
 #include "util/mutexlock.h"
 #include "util/posix_logger.h"
 #include "util/env_posix_test_helper.h"
-
+#ifdef METRICS
+#include "motivation/slm_metrics.h"
+#endif
 namespace leveldb {
 
 namespace {
@@ -169,6 +171,9 @@ class PosixRandomAccessFile: public RandomAccessFile {
     Status s;
     scratch = new char[n];
     ssize_t r = pread(fd, scratch, n, static_cast<off_t>(offset));
+#ifdef METRICS
+      motivation::metrics().AddDiskReadBytes(r);
+#endif
     *result = Slice(scratch, (r < 0) ? 0 : r);
     if (r < 0) {
       // An error: return a non-ok status
@@ -237,6 +242,9 @@ class PosixWritableFile : public WritableFile {
 
   virtual Status Append(const Slice& data) {
     size_t n = data.size();
+#ifdef METRICS
+    motivation::metrics().AddDiskWriteBytes(n);
+#endif
     const char* p = data.data();
 
     // Fit as much as possible into buffer.

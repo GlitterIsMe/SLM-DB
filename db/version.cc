@@ -4,7 +4,9 @@
 #ifdef PERF_LOG
 #include "util/perf_log.h"
 #endif
-
+#ifdef METRICS
+#include "motivation/slm_metrics.h"
+#endif
 namespace leveldb {
 
 enum SaverState {
@@ -43,7 +45,9 @@ Status Version::Get(const ReadOptions& options, const LookupKey& key, std::strin
   const Comparator* ucmp = vcontrol_->user_comparator();
 
   Index* index = vcontrol_->options()->index;
-
+#ifdef METRICS
+    auto start_locating = motivation::metrics().now();
+#endif
 #ifdef PERF_LOG
   uint64_t start_micros = benchmark::NowMicros();
   const IndexMeta* index_meta = index->Get(user_key);
@@ -52,13 +56,27 @@ Status Version::Get(const ReadOptions& options, const LookupKey& key, std::strin
   const IndexMeta* index_meta = index->Get(user_key);
 #endif
 
+#ifdef METRICS
+    auto end_locating = motivation::metrics().now();
+    motivation::metrics().AddLocatingLatency(
+            std::chrono::duration_cast<std::chrono::microseconds>(end_locating - start_locating).count());
+#endif
+
   if (index_meta != nullptr) {
     Saver saver;
     saver.state = kNotFound;
     saver.ucmp = ucmp;
     saver.user_key = user_key;
     saver.value = val;
+#ifdef METRICS
+      auto start_disk_read = motivation::metrics().now();
+#endif
     s = vcontrol_->cache()->Get(options, index_meta, ikey, &saver, SaveValue);
+#ifdef METRICS
+      auto end_disk_read = motivation::metrics().now();
+      motivation::metrics().AddDiskReadLatency(
+              std::chrono::duration_cast<std::chrono::microseconds>(end_disk_read - start_disk_read).count());
+#endif
     *file_number = index_meta->file_number;
     if (!s.ok()) {
       return s;

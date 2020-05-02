@@ -32,7 +32,8 @@ add_definitions(-DOS_LINUX)
 add_definitions(-DLEVELDB_PLATFORM_POSIX)
 add_definitions(-fno-builtin-memcmp)
 add_definitions(-Wint-to-pointer-cast)
-add_definitions(-DPERF_LOG=1)
+#add_definitions(-DPERF_LOG=1)
+add_definitions(-DMETRICS=1)
 
 set(LEVEL_DB_FILES
         include/leveldb/cache.h
@@ -144,7 +145,9 @@ set(LEVEL_DB_FILES
         index/ff_btree.h
         index/ff_btree_iterator.cc
         index/ff_btree_iterator.h
-        index/index.cc)
+        index/index.cc
+        motivation/slm_metrics.cc
+        motivation/slm_metrics.h)
 
 if(WIN32)
     list(APPEND LEVEL_DB_FILES
